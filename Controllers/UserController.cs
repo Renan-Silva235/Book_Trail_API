@@ -1,4 +1,5 @@
 using BookTrail_Api.DTOs.Requests;
+using BookTrail_Api.DTOs.Responses;
 using BookTrail_Api.Entities;
 using BookTrail_Api.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +12,6 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private UserService _service;
-    private string message = "";
     
     public UserController(ILogger<UserController> logger, UserService service)
     {
@@ -25,13 +25,14 @@ public class UserController : ControllerBase
         try
         {
             await _service.RegisterUser(dto);
-            message = "Conta Criada com sucesso!.";
-            return Ok(message);
+            MessageResponse response = new MessageResponse("Conta Criada com sucesso!.");
+            return Ok(response);
         }
         catch (Exception e)
         {
-            message = e.Message;
-            return BadRequest(message);
+            MessageResponse response = new MessageResponse(e.Message);
+
+            return BadRequest(response);
         }
     }
 }
